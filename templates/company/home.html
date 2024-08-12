@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+| Companies
+{% endblock title %}
+{% block content %}
+<h1>List of companies</h1>
+
+
+{% for company in companies %}
+    
+    <h2>{{ company.name }}</h2>
+    {% if company.service.all %}
+    <ul>
+        {% for service in company.service.all %}
+            <li>{{ service.name }}</li>
+        {% endfor %}
+    </ul>
+    <br>
+{% else %}
+    <p>This company does not offer any services.</p>
+{% endif %}
+    <ul>
+        {% for employee in employees %}
+        {%if employee.company.id == company.id %}
+        <li> {{ employee.name }} </li>
+        {% for working_hour in employee.working_hours.all %}
+            <li>{{ working_hour.day.day }} - {{ working_hour.time_from }} - {{ working_hour.time_to }}</li>
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <br>
+{% endfor %}
+
+
+{% endblock content %}
