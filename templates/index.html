@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% comment %} {% for zam in zamestanci %}
+{{ zam.name }};
+
+<ul>
+    {% for slot in zam.get_monday_slots %}
+        <li>{{ slot }}</li>
+    {% empty %}
+        <li>No slots available</li>
+    {% endfor %}
+</ul>
+<ul>
+    {% for slot in zam.get_friday_slots %}
+        <li>{{ slot }}</li>
+    {% empty %}
+        <li>No slots available</li>
+    {% endfor %}
+</ul>
+
+{% endfor %} {% endcomment %}
+
+
+{% endblock content %}

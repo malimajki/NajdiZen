@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Select a Date for {{ employee.name }}</h1>
+
+<!-- Date Picker Input -->
+<input type="text" id="datepicker" placeholder="Select a date">
+
+<!-- Container for Available Slots -->
+<div id="slots">
+    <!-- Slots will be dynamically loaded here -->
+</div>
+
+<script>
+    // Initialize Pikaday Date Picker
+    var picker = new Pikaday({
+        field: document.getElementById('datepicker'),
+        format: 'YYYY-MM-DD',
+        onSelect: function(date) {
+            fetchSlots(date);
+        }
+    });
+
+    function fetchSlots(date) {
+        const url = "{% url 'fetch_slots' employee.id %}?date=" + date.toISOString().split('T')[0];
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const slotsContainer = document.getElementById('slots');
+            slotsContainer.innerHTML = '';  // Clear previous slots
+            if (data.slots.length > 0) {
+                data.slots.forEach(slot => {
+                    const slotElement = document.createElement('div');
+                    slotElement.innerHTML = `<a href="${slot.book_url}">${slot.time}</a>`;
+                    slotsContainer.appendChild(slotElement);
+                });
+            } else {
+                slotsContainer.innerHTML = '<p>No slots available for this date.</p>';
+            }
+        });
+    }
+</script>
+
+
+{% endblock %}

@@ -3,10 +3,12 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path, include
+from booking.views import index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("company.urls", namespace="company"))
+    path("", index, name="home"),
+    path('booking/', include('booking.urls')),
 ]
 
 if settings.DEBUG:
